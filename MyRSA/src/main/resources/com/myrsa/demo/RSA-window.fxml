@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+
+<VBox fx:controller="com.myrsa.demo.RSAController" alignment="TOP_LEFT" spacing="10"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
+
+    <fx:define>
+        <ToggleGroup fx:id="navigationGroup"/>
+    </fx:define>
+
+    <HBox alignment="TOP_LEFT" spacing="5">
+        <ToggleButton fx:id="keyManagementNavButton" text="密钥管理" userData="keyManagement" toggleGroup="$navigationGroup" onAction="#handleNavigation"
+                      style="-fx-padding: 5 10; -fx-font-size: 12px;" selected="true"/>
+        <ToggleButton fx:id="encryptionDecryptionNavButton" text="加解密" userData="encryptionDecryption" toggleGroup="$navigationGroup" onAction="#handleNavigation"
+                      style="-fx-padding: 5 10; -fx-font-size: 12px;"/>
+        <ToggleButton fx:id="signingVerificationNavButton" text="签名验签" userData="signingVerification" toggleGroup="$navigationGroup" onAction="#handleNavigation"
+                      style="-fx-padding: 5 10; -fx-font-size: 12px;"/>
+    </HBox>
+
+    <Separator/>
+
+    <StackPane VBox.vgrow="ALWAYS">
+        <VBox fx:id="keyManagementSection" spacing="10" visible="true" managed="true">
+            <Label text="密钥管理" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <GridPane hgap="10" vgap="10">
+                <Label text="密钥位数:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="keySizeComboBox" prefWidth="120" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <Button fx:id="generateKeyButton" text="生成密钥对" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+
+                <Label text="公钥 (e, n):" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="3"/>
+                <ScrollPane fitToWidth="true" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="3">
+                    <content>
+                        <TextArea fx:id="publicKeyText" editable="false" prefHeight="80" wrapText="true"/>
+                    </content>
+                </ScrollPane>
+                <HBox spacing="10" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="3">
+                    <Button fx:id="savePublicKeyButton" text="保存公钥"/>
+                    <Button fx:id="loadPublicKeyButton" text="加载公钥"/>
+                </HBox>
+
+                <Label text="私钥 (d, n):" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="3"/>
+                <ScrollPane fitToWidth="true" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="3">
+                    <content>
+                        <TextArea fx:id="privateKeyText" editable="false" prefHeight="80" wrapText="true"/>
+                    </content>
+                </ScrollPane>
+                <HBox spacing="10" GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.columnSpan="3">
+                    <Button fx:id="savePrivateKeyButton" text="保存私钥"/>
+                    <Button fx:id="loadPrivateKeyButton" text="加载私钥"/>
+                </HBox>
+            </GridPane>
+        </VBox>
+
+        <VBox fx:id="encryptionDecryptionSection" spacing="10" visible="false" managed="false">
+            <Label text="加密/解密" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <Label text="输入文本 (明文/密文):"/>
+            <TextArea fx:id="inputText" prefHeight="100" promptText="请输入待处理的文本"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button fx:id="encryptButton" text="加密"/>
+                <Button fx:id="decryptButton" text="解密"/>
+            </HBox>
+            <Label text="输出结果 (密文/明文):"/>
+            <TextArea fx:id="outputText" editable="false" prefHeight="100" promptText="处理结果"/>
+        </VBox>
+
+        <VBox fx:id="signingVerificationSection" spacing="10" visible="false" managed="false">
+            <Label text="签名与验签" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <Label text="原始消息:"/>
+            <TextArea fx:id="messageForSignVerifyText" prefHeight="80" promptText="请输入原始消息"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button fx:id="hashMessageButton" text="哈希消息 (SHA-256)"/>
+                <Button fx:id="signButton" text="签名"/>
+            </HBox>
+            <Label text="消息哈希值:"/>
+            <TextArea fx:id="messageHashText" editable="false" prefHeight="60" promptText="消息的SHA-256哈希值"/>
+
+            <Label text="签名结果:"/>
+            <TextArea fx:id="signatureInputText" prefHeight="80" promptText="签名结果或待验证的签名"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button fx:id="verifyButton" text="验签"/>
+            </HBox>
+            <Label text="验签结果:"/>
+            <TextArea fx:id="verificationResultText" editable="false" prefHeight="40" promptText="签名验证结果"/>
+        </VBox>
+    </StackPane>
+</VBox>
